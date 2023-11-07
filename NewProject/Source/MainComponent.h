@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Metronome.h"
 
 //==============================================================================
 /*
@@ -37,6 +38,8 @@ private:
     juce::TextButton stopButton { "Stop" };
     
     PlayState playstate { PlayState::Stopped };
+    
+    Metronome metronome; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

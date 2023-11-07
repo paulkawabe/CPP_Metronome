@@ -14,8 +14,24 @@
 
 class Metronome
 {
-    public:
+public:
+    void prepareToPlay(double sampleRate);
+    void countSamples( int bufferSize );
+    void reset();
     
-    private:
+    int getTotalSamples()
+    {
+        return mTotalSamples;
+    };
+    
+    double getSampleRate()
+    {
+        return mSampleRate;
+    };
+    
+private:
+    int mTotalSamples { 0 };
+    double mSampleRate { 0 };
+    
     
 };

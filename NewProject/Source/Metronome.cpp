@@ -10,4 +10,18 @@
 
 #include "Metronome.h"
 
+void Metronome::prepareToPlay(double sampleRate)
+{
+    mSampleRate = sampleRate;
+}
 
+void Metronome::countSamples( int bufferSize )
+{
+    mTotalSamples+=bufferSize;
+    std::cout << mTotalSamples << std::endl;
+};
+
+void Metronome::reset()
+{
+    mTotalSamples = 0;
+};
