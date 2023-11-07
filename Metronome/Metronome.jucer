@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="vwINTk" name="NewProject" projectType="guiapp" useAppConfig="0"
+<JUCERPROJECT id="vwINTk" name="Metronome" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
-  <MAINGROUP id="vOjd37" name="NewProject">
+  <MAINGROUP id="vOjd37" name="Metronome">
     <GROUP id="{ACC4E78A-C6BA-C160-3594-508680AB8ADC}" name="Source">
       <FILE id="DErH9e" name="Metronome.cpp" compile="1" resource="0" file="Source/Metronome.cpp"/>
       <FILE id="oHcEGz" name="Metronome.h" compile="0" resource="0" file="Source/Metronome.h"/>
