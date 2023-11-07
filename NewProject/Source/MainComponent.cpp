@@ -3,15 +3,15 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    playButton.setRadioGroupId(1);
-    playButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-    playButton.onClick = [this]() { play(); };
-    addAndMakeVisible(playButton);
+    mPlayButton.setRadioGroupId(1);
+    mPlayButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    mPlayButton.onClick = [this]() { play(); };
+    addAndMakeVisible(mPlayButton);
     
-    stopButton.setRadioGroupId(1);
-    stopButton.setToggleState(true, juce::NotificationType::dontSendNotification);
-    stopButton.onClick = [this]() { stop(); };
-    addAndMakeVisible(stopButton);
+    mStopButton.setRadioGroupId(1);
+    mStopButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+    mStopButton.onClick = [this]() { stop(); };
+    addAndMakeVisible(mStopButton);
 
     
     setSize (200, 200);
@@ -38,22 +38,23 @@ MainComponent::~MainComponent()
 
 void MainComponent::play()
 {
-    playstate = PlayState::Playing;
+    mPlaystate = PlayState::Playing;
 };
 
 void MainComponent::stop()
 {
-    playstate = PlayState::Stopped;
-    std::cout << "stopped at " << metronome.getTotalSamples() << std::endl;
-    std::cout << "sample rate: " << metronome.getSampleRate() << std::endl;
-    metronome.reset();
+    mPlaystate = PlayState::Stopped;
+    std::cout << "stopped at " << mMetronome.getTotalSamples() << std::endl;
+    std::cout << "sample rate: " << mMetronome.getSampleRate() << std::endl;
+    mMetronome.reset();
+    mMetronome.stopTimer();
 };
 
 
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    metronome.prepareToPlay(sampleRate);
+    mMetronome.prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
@@ -61,11 +62,9 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
 
     bufferToFill.clearActiveBufferRegion();
     
-    auto buffer = bufferToFill.numSamples;
-    
-    if (playstate == PlayState::Playing)
+    if (mPlaystate == PlayState::Playing)
     {
-        metronome.countSamples(buffer);
+        mMetronome.getNextAudioBlock(bufferToFill);
     }
 
 }
@@ -95,7 +94,7 @@ void MainComponent::resized()
     // update their positions.
     
     juce::FlexBox flexBox;
-    flexBox.items.add(juce::FlexItem(100, 100, playButton));
-    flexBox.items.add(juce::FlexItem(100, 100, stopButton));
+    flexBox.items.add(juce::FlexItem(100, 100, mPlayButton));
+    flexBox.items.add(juce::FlexItem(100, 100, mStopButton));
     flexBox.performLayout(bounds);
 }

@@ -12,12 +12,16 @@
 
 #include <JuceHeader.h>
 
-class Metronome
+class Metronome : public juce::HighResolutionTimer
 {
 public:
-    void prepareToPlay(double sampleRate);
-    void countSamples( int bufferSize );
+    Metronome();
+    
+    void prepareToPlay(int samplesPerBlockExpected,double sampleRate);
+    void getNextAudioBlock( const juce::AudioSourceChannelInfo& bufferToFill );
     void reset();
+    
+    void hiResTimerCallback() override;
     
     int getTotalSamples()
     {
@@ -32,6 +36,11 @@ public:
 private:
     int mTotalSamples { 0 };
     double mSampleRate { 0 };
+    int mInterval { 0 };
+    int mBpm { 90 };
+    int mSamplesRemaining { 0 };
     
+    juce::AudioFormatManager mFormatManager;
+    std::unique_ptr <juce::AudioFormatReaderSource> pMetronomeSample { nullptr };
     
 };

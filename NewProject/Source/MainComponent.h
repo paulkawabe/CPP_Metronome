@@ -34,12 +34,12 @@ public:
     };
 
 private:
-    juce::TextButton playButton { "Play" };
-    juce::TextButton stopButton { "Stop" };
+    juce::TextButton mPlayButton { "Play" };
+    juce::TextButton mStopButton { "Stop" };
     
-    PlayState playstate { PlayState::Stopped };
+    PlayState mPlaystate { PlayState::Stopped };
     
-    Metronome metronome; 
+    Metronome mMetronome; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
