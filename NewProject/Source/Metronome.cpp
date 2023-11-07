@@ -26,7 +26,7 @@ Metronome::Metronome()
 void Metronome::prepareToPlay(int samplesPerBlock, double sampleRate)
 {
     mSampleRate = sampleRate;
-    mInterval = 60.0 / mBpm * mSampleRate;
+    mUpdateInterval = 60.0 / mBpm * mSampleRate;
     juce::HighResolutionTimer::startTimer(60.0);
     
     if (pMetronomeSample != nullptr)
@@ -38,21 +38,32 @@ void Metronome::prepareToPlay(int samplesPerBlock, double sampleRate)
 
 void Metronome::getNextAudioBlock( const juce::AudioSourceChannelInfo& bufferToFill)
 {
-    auto bufferSize = bufferToFill.numSamples;
+    const auto bufferSize = bufferToFill.numSamples;
     
     mTotalSamples+=bufferSize;
     
-    mSamplesRemaining = mTotalSamples % mInterval;
+    mSamplesRemaining = mTotalSamples % mUpdateInterval;
     
-//    std::cout << "mSamples remaining: " << mSamplesRemaining << std::endl;
-//    std::cout << "Beat Interval: " << mInterval << std::endl;
-    
-    if ((mSamplesRemaining + bufferSize) >= mInterval)
+    if ((mSamplesRemaining + bufferSize) >= mUpdateInterval)
     {
-        std::cout << ("CLICK") << std::endl << "Total Samples: " << mTotalSamples << std::endl;
+        const auto timeToStartPlaying = mUpdateInterval - mSamplesRemaining;
+        pMetronomeSample->setNextReadPosition(0);
+        
+        for (auto sample = 0; sample < bufferSize; sample++)
+        {
+            if (sample == timeToStartPlaying)
+            {
+                std::cout << ("CLICK -- ") << sample + mSamplesRemaining << std::endl;
+                std::cout << "Total Samples: " << mTotalSamples << std::endl;
+                pMetronomeSample->getNextAudioBlock(bufferToFill);
+            }
+        }
     }
     
-//    pMetronomeSample->getNextAudioBlock(<#const AudioSourceChannelInfo &#>)
+    if (pMetronomeSample->getNextReadPosition() != 0)
+    {
+        pMetronomeSample->getNextAudioBlock(bufferToFill);
+    }
     
 };
 
@@ -63,5 +74,5 @@ void Metronome::reset()
 
 void Metronome::hiResTimerCallback()
 {
-    mInterval = 60.0 / mBpm * mSampleRate;
+    mUpdateInterval = 60.0 / mBpm * mSampleRate;
 }

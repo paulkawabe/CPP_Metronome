@@ -36,8 +36,8 @@ public:
 private:
     int mTotalSamples { 0 };
     double mSampleRate { 0 };
-    int mInterval { 0 };
-    int mBpm { 90 };
+    int mUpdateInterval { 0 };
+    int mBpm { 120 };
     int mSamplesRemaining { 0 };
     
     juce::AudioFormatManager mFormatManager;
