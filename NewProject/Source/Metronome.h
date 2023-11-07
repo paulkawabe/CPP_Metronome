@@ -9,3 +9,13 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+
+class Metronome
+{
+    public:
+    
+    private:
+    
+};
